@@ -4210,7 +4210,7 @@ theorem averageSensitivity_le_dimension {n : ℕ} (f : Cube n → ℝ) :
 
 theorem polynomial_bound_3762 {n d : ℕ} (hn : 1≤n) (hd : 1≤d)
     (p : MvPolynomial (Fin n) ℝ) (hp : IsMultilinear p) (hdegree : p.totalDegree≤d) :
-    averageSensitivity (polynomialThreshold p) ≤ (1881/500:ℝ)*(d:ℝ)*Real.sqrt (n:ℝ) := by
+    averageSensitivity (polynomialThreshold p) ≤ (37619/10000:ℝ)*(d:ℝ)*Real.sqrt (n:ℝ) := by
   exact extract_constant n d hn hd _ (averageSensitivity_le_dimension _) (polynomial_refined p hp hdegree)
 
 end AverageSensitivity
@@ -4278,7 +4278,7 @@ theorem multilinearize_value {n : ℕ} (p : MvPolynomial (Fin n) ℝ) (x : Cube 
 
 theorem polynomial_bound_3762_general {n d : ℕ} (hn : 1≤n) (hd : 1≤d)
     (p : MvPolynomial (Fin n) ℝ) (hdegree : p.totalDegree≤d) :
-    averageSensitivity (polynomialThreshold p) ≤ (1881/500:ℝ)*(d:ℝ)*Real.sqrt (n:ℝ) := by
+    averageSensitivity (polynomialThreshold p) ≤ (37619/10000:ℝ)*(d:ℝ)*Real.sqrt (n:ℝ) := by
   have hsame : polynomialThreshold (multilinearize p) = polynomialThreshold p := by
     funext x
     unfold polynomialThreshold

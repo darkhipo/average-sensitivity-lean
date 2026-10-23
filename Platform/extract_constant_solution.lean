@@ -184,7 +184,7 @@ theorem mad_tail_squared (n : ℕ) (hn : 20 ≤ n) :
       _ = _ := by ring
 
 theorem small_numeric (n : ℕ) (hn : 15 ≤ n) (hn' : n < 20) :
-    (8*mad n+2)^2 ≤ (1881/500:ℝ)^2*(n:ℝ) := by
+    (8*mad n+2)^2 ≤ (37619/10000:ℝ)^2*(n:ℝ) := by
   interval_cases n <;>
     norm_num [mad,rawMAD,Finset.sum_range_succ,
       Nat.choose_eq_descFactorial_div_factorial,Nat.descFactorial,Nat.factorial]
@@ -192,31 +192,31 @@ theorem small_numeric (n : ℕ) (hn : 15 ≤ n) (hn' : n < 20) :
 theorem extract_constant (n d : ℕ) (hn : 1 ≤ n) (hd : 1 ≤ d)
     (A : ℝ) (htrivial : A ≤ (n:ℝ))
     (hrefined : A ≤ 8*(d:ℝ)*mad n+2*(d:ℝ)^2) :
-    A ≤ (1881/500:ℝ)*(d:ℝ)*Real.sqrt (n:ℝ) := by
+    A ≤ (37619/10000:ℝ)*(d:ℝ)*Real.sqrt (n:ℝ) := by
   have hs0 := Real.sqrt_nonneg (n:ℝ)
   have hs2 := Real.sq_sqrt (Nat.cast_nonneg n)
   have hn0 : (0:ℝ)≤(n:ℝ) := Nat.cast_nonneg n
   have hd0 : (1:ℝ)≤(d:ℝ) := by exact_mod_cast hd
-  by_cases ht : (n:ℝ) ≤ (1881/500:ℝ)^2*(d:ℝ)^2
-  · have hscale : Real.sqrt (n:ℝ) ≤ (1881/500:ℝ)*(d:ℝ) := by
+  by_cases ht : (n:ℝ) ≤ (37619/10000:ℝ)^2*(d:ℝ)^2
+  · have hscale : Real.sqrt (n:ℝ) ≤ (37619/10000:ℝ)*(d:ℝ) := by
       nlinarith
     have hm := mul_le_mul_of_nonneg_right hscale hs0
     nlinarith
-  · have hscale : (1881/500:ℝ)*(d:ℝ) < Real.sqrt (n:ℝ) := by
+  · have hscale : (37619/10000:ℝ)*(d:ℝ) < Real.sqrt (n:ℝ) := by
       nlinarith
     by_cases hlarge : 20 ≤ n
     · have hm2 := mad_tail_squared n hlarge
       have hm0 := mad_nonneg n
-      have hcoef : (34400/3297:ℝ) < (1881/500-2/(1881/500):ℝ)^2 := by norm_num
+      have hcoef : (34400/3297:ℝ) < (37619/10000-2/(37619/10000):ℝ)^2 := by norm_num
       have hmn := mul_le_mul_of_nonneg_right hcoef.le hn0
-      have hmad : 8*mad n ≤ (1881/500-2/(1881/500):ℝ)*Real.sqrt (n:ℝ) := by
+      have hmad : 8*mad n ≤ (37619/10000-2/(37619/10000):ℝ)*Real.sqrt (n:ℝ) := by
         have hsquare : (8*mad n)^2 ≤
-            ((1881/500-2/(1881/500):ℝ)*Real.sqrt (n:ℝ))^2 := by
+            ((37619/10000-2/(37619/10000):ℝ)*Real.sqrt (n:ℝ))^2 := by
           simp only [mul_pow,hs2]
           nlinarith
-        have hpos : 0 ≤ (1881/500-2/(1881/500):ℝ)*Real.sqrt (n:ℝ) := by positivity
+        have hpos : 0 ≤ (37619/10000-2/(37619/10000):ℝ)*Real.sqrt (n:ℝ) := by positivity
         nlinarith
-      have hi : 8*mad n+2*(d:ℝ) ≤ (1881/500:ℝ)*Real.sqrt (n:ℝ) := by
+      have hi : 8*mad n+2*(d:ℝ) ≤ (37619/10000:ℝ)*Real.sqrt (n:ℝ) := by
         nlinarith
       have hm := mul_le_mul_of_nonneg_left hi (Nat.cast_nonneg d)
       nlinarith
@@ -232,10 +232,10 @@ theorem extract_constant (n d : ℕ) (hn : 1 ≤ n) (hd : 1 ≤ d)
         exact_mod_cast this
       have hm2 := small_numeric n hn15 (by omega)
       have hm0 := mad_nonneg n
-      have hsquare : (8*mad n+2)^2 ≤ ((1881/500:ℝ)*Real.sqrt (n:ℝ))^2 := by
+      have hsquare : (8*mad n+2)^2 ≤ ((37619/10000:ℝ)*Real.sqrt (n:ℝ))^2 := by
         rw [mul_pow,hs2]
         exact hm2
-      have hpos : 0≤(1881/500:ℝ)*Real.sqrt (n:ℝ) := by positivity
+      have hpos : 0≤(37619/10000:ℝ)*Real.sqrt (n:ℝ) := by positivity
       nlinarith
 
 end AverageSensitivity
