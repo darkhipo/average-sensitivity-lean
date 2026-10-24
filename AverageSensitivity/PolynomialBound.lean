@@ -91,7 +91,7 @@ theorem averageSensitivity_le_dimension {n : ℕ} (f : Cube n → ℝ) :
 
 theorem polynomial_bound_3762 {n d : ℕ} (hn : 1≤n) (hd : 1≤d)
     (p : MvPolynomial (Fin n) ℝ) (hp : IsMultilinear p) (hdegree : p.totalDegree≤d) :
-    averageSensitivity (polynomialThreshold p) ≤ (376153979/100000000:ℝ)*(d:ℝ)*Real.sqrt (n:ℝ) := by
+    averageSensitivity (polynomialThreshold p) ≤ (376153978/100000000:ℝ)*(d:ℝ)*Real.sqrt (n:ℝ) := by
   exact extract_constant n d hn hd _ (averageSensitivity_le_dimension _) (polynomial_refined p hp hdegree)
 
 end AverageSensitivity
