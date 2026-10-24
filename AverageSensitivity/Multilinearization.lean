@@ -60,7 +60,7 @@ theorem multilinearize_value {n : ℕ} (p : MvPolynomial (Fin n) ℝ) (x : Cube 
 
 theorem polynomial_bound_3762_general {n d : ℕ} (hn : 1≤n) (hd : 1≤d)
     (p : MvPolynomial (Fin n) ℝ) (hdegree : p.totalDegree≤d) :
-    averageSensitivity (polynomialThreshold p) ≤ (376153978/100000000:ℝ)*(d:ℝ)*Real.sqrt (n:ℝ) := by
+    averageSensitivity (polynomialThreshold p) ≤ (37615342161/10000000000:ℝ)*(d:ℝ)*Real.sqrt (n:ℝ) := by
   have hsame : polynomialThreshold (multilinearize p) = polynomialThreshold p := by
     funext x
     unfold polynomialThreshold

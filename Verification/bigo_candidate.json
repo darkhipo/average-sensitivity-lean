@@ -1,7 +1,7 @@
 {
   "entry_point": "Race.bound",
-  "target": "BigOSpeedrun.AverageSensitivity.Bound (1881 / 500 : \u211a)",
-  "bound": "1881/500",
+  "target": "BigOSpeedrun.AverageSensitivity.Bound (37615342161/10000000000 : \u211a)",
+  "bound": "37615342161/10000000000",
   "status": "candidate-for-proposed-target-not-yet-enabled-by-Big-O",
   "modules": [
     {
@@ -156,8 +156,8 @@
     "Mathlib.LinearAlgebra.Dimension.Constructions",
     "Mathlib.Data.Nat.Choose.Central"
   ],
-  "sha256": "f514b33bbdcb0c682e38c6dae7ad0e9b587e3600d716e03adc6c0704c335731e",
-  "byte_count": 204874,
+  "sha256": "77ce74c2ea51b305b0f9c752c6f359b459115f275b51b227d116b9e9c5f4caf0",
+  "byte_count": 205421,
   "toolchain": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
 }
