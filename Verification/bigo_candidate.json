@@ -1,7 +1,7 @@
 {
   "entry_point": "Race.bound",
-  "target": "BigOSpeedrun.AverageSensitivity.Bound (37615342161/10000000000 : \u211a)",
-  "bound": "37615342161/10000000000",
+  "target": "BigOSpeedrun.AverageSensitivity.Bound (18807273/5000000 : \u211a)",
+  "bound": "18807273/5000000",
   "status": "candidate-for-proposed-target-not-yet-enabled-by-Big-O",
   "modules": [
     {
@@ -97,12 +97,20 @@
       "path": "AverageSensitivity/RefinedCoupling.lean"
     },
     {
+      "name": "AverageSensitivity.ChargeMass",
+      "path": "AverageSensitivity/ChargeMass.lean"
+    },
+    {
       "name": "AverageSensitivity.BinomialMAD",
       "path": "AverageSensitivity/BinomialMAD.lean"
     },
     {
       "name": "AverageSensitivity.BlockRefinement",
       "path": "AverageSensitivity/BlockRefinement.lean"
+    },
+    {
+      "name": "AverageSensitivity.MADMonotone",
+      "path": "AverageSensitivity/MADMonotone.lean"
     },
     {
       "name": "AverageSensitivity.ConstantExtraction",
@@ -156,8 +164,8 @@
     "Mathlib.LinearAlgebra.Dimension.Constructions",
     "Mathlib.Data.Nat.Choose.Central"
   ],
-  "sha256": "77ce74c2ea51b305b0f9c752c6f359b459115f275b51b227d116b9e9c5f4caf0",
-  "byte_count": 205421,
+  "sha256": "68a0f0eeaeb0447018468237bb1c2777712674d1b8558c3bf5a4597c46347391",
+  "byte_count": 239462,
   "toolchain": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
 }
