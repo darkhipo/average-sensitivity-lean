@@ -46,14 +46,6 @@ theorem central_pos (k : ℕ) : 0 < central k := by
   unfold central
   exact div_pos (by exact_mod_cast Nat.centralBinom_pos k) (by positivity)
 
-theorem mad_zero : mad 0 = 0 := by
-  simp [mad, rawMAD]
-
-theorem mad_nonneg (n : ℕ) : 0 ≤ mad n := by
-  unfold mad rawMAD
-  refine div_nonneg (Finset.sum_nonneg fun j _ => ?_) (by positivity)
-  exact mul_nonneg (Nat.cast_nonneg _) (abs_nonneg _)
-
 /-! ## The Wallis product cancels `central k` -/
 
 /-- `(2k+1) · W k · (central k)² = 1` — the exact bridge between the Wallis

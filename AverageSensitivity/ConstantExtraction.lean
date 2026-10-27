@@ -30,10 +30,6 @@ theorem central_tail (k : ℕ) (hk : 10 ≤ k) :
     apply (mul_le_mul_iff_right₀ hpos).mp
     nlinarith [he]
 
-theorem mad_nonneg (n : ℕ) : 0 ≤ mad n := by
-  unfold mad rawMAD
-  positivity
-
 theorem mad_tail_squared (n : ℕ) (hn : 20 ≤ n) :
     64*mad n^2 ≤ (168000000/16105143:ℝ)*(n:ℝ) := by
   let k := n/2

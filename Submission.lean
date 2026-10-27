@@ -4994,6 +4994,14 @@ theorem mad_odd (k : ℕ) : mad (2*k+1) = (2*(k:ℝ)+1)*central k/2 := by
   norm_num
   ring
 
+theorem mad_zero : mad 0 = 0 := by
+  simp [mad, rawMAD]
+
+theorem mad_nonneg (n : ℕ) : 0 ≤ mad n := by
+  unfold mad rawMAD
+  refine div_nonneg (Finset.sum_nonneg fun j _ => ?_) (by positivity)
+  exact mul_nonneg (Nat.cast_nonneg _) (abs_nonneg _)
+
 theorem central_step (k : ℕ) :
     (2*(k:ℝ)+2)*central (k+1) = (2*(k:ℝ)+1)*central k := by
   have hc : ((k:ℝ)+1)*(Nat.centralBinom (k+1):ℝ) =
@@ -5703,10 +5711,6 @@ theorem central_tail (k : ℕ) (hk : 10 ≤ k) :
     apply (mul_le_mul_iff_right₀ hpos).mp
     nlinarith [he]
 
-theorem mad_nonneg (n : ℕ) : 0 ≤ mad n := by
-  unfold mad rawMAD
-  positivity
-
 theorem mad_tail_squared (n : ℕ) (hn : 20 ≤ n) :
     64*mad n^2 ≤ (168000000/16105143:ℝ)*(n:ℝ) := by
   let k := n/2
@@ -6159,14 +6163,6 @@ theorem central_nonneg (k : ℕ) : 0 ≤ central k := by
 theorem central_pos (k : ℕ) : 0 < central k := by
   unfold central
   exact div_pos (by exact_mod_cast Nat.centralBinom_pos k) (by positivity)
-
-theorem mad_zero : mad 0 = 0 := by
-  simp [mad, rawMAD]
-
-theorem mad_nonneg (n : ℕ) : 0 ≤ mad n := by
-  unfold mad rawMAD
-  refine div_nonneg (Finset.sum_nonneg fun j _ => ?_) (by positivity)
-  exact mul_nonneg (Nat.cast_nonneg _) (abs_nonneg _)
 
 /-! ## The Wallis product cancels `central k` -/
 
