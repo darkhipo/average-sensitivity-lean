@@ -80,6 +80,29 @@ record = {
     'toolchain': 'leanprover/lean4:v4.33.1',
     'mathlib': '0df444a360eaa60ab8c11dca51a86af692955474',
 }
+
+# R2125606842 guard: the concatenation must not redeclare a fully-qualified name.
+# (Verifier run 40518297985 failed on exactly this class.)
+import re as _re
+_ns = []
+_decl = {}
+for _ln, _line in enumerate(output.read_text(encoding='utf8').splitlines(), 1):
+    _s = _line.strip()
+    _m = _re.match(r"^(?:private\s+)?(?:noncomputable\s+)?(theorem|def|lemma)\s+([A-Za-z_][A-Za-z0-9_']*)(?![.\w])", _s)
+    if _m:
+        _full = '.'.join(_ns + [_m.group(2)])
+        _decl.setdefault(_full, []).append(_ln)
+    _mns = _re.match(r'^namespace\s+([A-Za-z_.]+)$', _s)
+    if _mns:
+        _ns.extend(_mns.group(1).split('.'))
+    elif _s == 'end' or _s.startswith('end '):
+        for _ in (_s[4:].strip().split('.') if _s != 'end' else ['']):
+            if _ns:
+                _ns.pop()
+_dups = {k: v for k, v in _decl.items() if len(v) > 1}
+assert not _dups, f'duplicate fully-qualified declarations in {output.name}: {_dups}'
+print(f'declaration dedupe check: OK ({len(_decl)} top-level names)')
+
 (ROOT / 'Verification/bigo_candidate.json').write_text(
     json.dumps(record, indent=2) + '\n', encoding='utf8')
 print(f'Generated {output.name}: {len(modules)} source modules, {output.stat().st_size} bytes')
