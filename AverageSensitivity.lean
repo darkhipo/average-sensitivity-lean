@@ -1,5 +1,6 @@
 import OAI.Combinatorics.GotsmanLinial.Main
 import AverageSensitivity.Multilinearization
+import AverageSensitivity.WallisMAD
 
 #print axioms OAI.LeanBlast.GotsmanLinial.gotsmanLinialStatement
 #print axioms AverageSensitivity.polynomial_bound_3762
