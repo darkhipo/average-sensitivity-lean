@@ -523,4 +523,137 @@ theorem compensated_coupling_at {Ω : Type*} [Fintype Ω]
     linarith [hK1, hneg, hpos, hX, hTeq]
   linarith [hfinal]
 
+/-- The positive part of the squared drift is at most `a·t` under a one-sided
+step `V - U ≤ a`: pointwise `D² ≤ a·D` on `0 < D ≤ a`. -/
+theorem pos_sq_sum_le_step {Ω : Type*} [Fintype Ω] (w U V : Ω → ℝ) (hw : ∀ i, 0 ≤ w i)
+    (a : ℝ) (hstep : ∀ i, V i - U i ≤ a) :
+    (∑ i, if 0 < V i - U i then w i * (V i - U i)^2 else 0) ≤
+      a * (∑ i, w i * max (V i - U i) 0) := by
+  classical
+  have h1 : (∑ i, if 0 < V i - U i then w i * (V i - U i)^2 else 0) ≤
+      (∑ i, if 0 < V i - U i then w i * (a * (V i - U i)) else 0) := by
+    apply Finset.sum_le_sum
+    intro i _
+    by_cases h : 0 < V i - U i
+    · rw [if_pos h, if_pos h]
+      have hd : (V i - U i) * (V i - U i) ≤ a * (V i - U i) :=
+        mul_le_mul_of_nonneg_right (hstep i) (le_of_lt h)
+      nlinarith [hd, hw i]
+    · rw [if_neg h, if_neg h]
+  have h2 : (∑ i, if 0 < V i - U i then w i * (a * (V i - U i)) else 0) =
+      a * (∑ i, if 0 < V i - U i then w i * (V i - U i) else 0) := by
+    have hpt : ∀ i ∈ (Finset.univ : Finset Ω),
+        (if 0 < V i - U i then w i * (a * (V i - U i)) else 0) =
+        a * (if 0 < V i - U i then w i * (V i - U i) else 0) := by
+      intro i _
+      by_cases h : 0 < V i - U i
+      · rw [if_pos h, if_pos h]
+        ring
+      · rw [if_neg h, if_neg h]
+        ring
+    rw [Finset.mul_sum]
+    exact Finset.sum_congr rfl (fun i hi => hpt i hi)
+  have h3 : (∑ i, if 0 < V i - U i then w i * (V i - U i) else 0) =
+      (∑ i, w i * max (V i - U i) 0) := by
+    apply Finset.sum_congr rfl
+    intro i _
+    by_cases h : 0 < V i - U i
+    · rw [if_pos h, max_eq_left (le_of_lt h)]
+    · rw [if_neg h, max_eq_right (by linarith : V i - U i ≤ 0)]
+      ring
+  rw [h2, h3] at h1
+  exact h1
+
+/-- The negative part of the squared drift is at most `L·t` under a one-sided
+range `U - V ≤ L`: pointwise `D² ≤ L·(-D)` on `D < 0`. -/
+theorem neg_sq_sum_le_range {Ω : Type*} [Fintype Ω] (w U V : Ω → ℝ) (hw : ∀ i, 0 ≤ w i)
+    (L : ℝ) (hrange : ∀ i, U i - V i ≤ L) :
+    (∑ i, if V i - U i < 0 then w i * (V i - U i)^2 else 0) ≤
+      L * (∑ i, if V i - U i < 0 then w i * (U i - V i) else 0) := by
+  classical
+  have h1 : (∑ i, if V i - U i < 0 then w i * (V i - U i)^2 else 0) ≤
+      (∑ i, if V i - U i < 0 then w i * (L * (U i - V i)) else 0) := by
+    apply Finset.sum_le_sum
+    intro i _
+    by_cases h : V i - U i < 0
+    · rw [if_pos h, if_pos h]
+      have hd : (U i - V i) * (U i - V i) ≤ L * (U i - V i) :=
+        mul_le_mul_of_nonneg_right (hrange i) (by linarith)
+      nlinarith [hd, hw i]
+    · rw [if_neg h, if_neg h]
+  have h2 : (∑ i, if V i - U i < 0 then w i * (L * (U i - V i)) else 0) =
+      L * (∑ i, if V i - U i < 0 then w i * (U i - V i) else 0) := by
+    have hpt : ∀ i ∈ (Finset.univ : Finset Ω),
+        (if V i - U i < 0 then w i * (L * (U i - V i)) else 0) =
+        L * (if V i - U i < 0 then w i * (U i - V i) else 0) := by
+      intro i _
+      by_cases h : V i - U i < 0
+      · rw [if_pos h, if_pos h]
+        ring
+      · rw [if_neg h, if_neg h]
+        ring
+    rw [Finset.mul_sum]
+    exact Finset.sum_congr rfl (fun i hi => hpt i hi)
+  rw [h2] at h1
+  exact h1
+
+/-- **Finite-range corollary (6)** of the compensated coupling — one paragraph
+of algebra from `compensated_coupling_at`: with `D⁺ ≤ a` and `D⁻ ≤ L`,
+`Q := E D² ≤ (L + a)·t`, and multiplying `Q + a·t ≤ 4ab` by `L + a` and
+adding `a·(Q - (L + a)t ≤ 0)` gives `(L + 2a)·Q ≤ 4ab·(L + a)`.  No
+integrality, no charge mass; the paper's block instantiation is `L = n`,
+`a = d`. -/
+theorem compensated_coupling_finite_range {Ω : Type*} [Fintype Ω]
+    (w U V : Ω → ℝ) (m a L : ℝ)
+    (hw : ∀ i, 0 ≤ w i)
+    (hsame : ∀ φ : ℝ → ℝ, ∑ i, w i * φ (U i) = ∑ i, w i * φ (V i))
+    (ha : 0 ≤ a) (hstep : ∀ i, V i - U i ≤ a)
+    (hL : 0 < L) (hrange : ∀ i, U i - V i ≤ L) :
+    ∑ i, w i * (V i - U i)^2 ≤
+      4 * a * (∑ i, w i * |U i - m|) * (L + a) / (L + 2 * a) := by
+  classical
+  have hmean : ∑ i, w i * (V i - U i) = 0 := by
+    have h1 := hsame (fun t => t)
+    have hsplit : ∑ i, w i * (V i - U i) =
+        (∑ i, w i * V i) - (∑ i, w i * U i) := by
+      simp only [mul_sub, Finset.sum_sub_distrib]
+    rw [hsplit, h1, sub_self]
+  have hT : (∑ i, w i * max (V i - U i) 0) =
+      (∑ i, if V i - U i < 0 then w i * (U i - V i) else 0) :=
+    drift_pos_eq_neg w U V hmean
+  have hP2 := pos_sq_sum_le_step w U V hw a hstep
+  have hN2 := neg_sq_sum_le_range w U V hw L hrange
+  have hK1 := drift_sq_split w U V
+  have hQ : (∑ i, w i * (V i - U i)^2) ≤ (L + a) * (∑ i, w i * max (V i - U i) 0) := by
+    have eL : L * (∑ i, w i * max (V i - U i) 0) =
+        L * (∑ i, if V i - U i < 0 then w i * (U i - V i) else 0) := by rw [hT]
+    have eT : (∑ i, w i * max (V i - U i) 0) =
+        (∑ i, if V i - U i < 0 then w i * (U i - V i) else 0) := hT
+    have hsplit2 : (L + a) * (∑ i, w i * max (V i - U i) 0) =
+        L * (∑ i, w i * max (V i - U i) 0) +
+        a * (∑ i, w i * max (V i - U i) 0) := by ring
+    rw [hsplit2, eL, ← eT]
+    linarith [hK1, hP2, hN2]
+  have h2 := compensated_coupling_at w U V m a hw hsame ha hstep
+  have hL2 : 0 < L + 2 * a := by linarith
+  have m1 : (L + a) * ((∑ i, w i * (V i - U i)^2) +
+      a * (∑ i, w i * max (V i - U i) 0)) ≤
+      (L + a) * (4 * a * (∑ i, w i * |U i - m|)) :=
+    mul_le_mul_of_nonneg_left h2 (by linarith)
+  have m2 : a * ((∑ i, w i * (V i - U i)^2) -
+      (L + a) * (∑ i, w i * max (V i - U i) 0)) ≤ 0 := by
+    have hnn : 0 ≤ (L + a) * (∑ i, w i * max (V i - U i) 0) -
+        (∑ i, w i * (V i - U i)^2) := sub_nonneg.mpr hQ
+    have hEq : a * ((∑ i, w i * (V i - U i)^2) -
+        (L + a) * (∑ i, w i * max (V i - U i) 0)) =
+        -(a * ((L + a) * (∑ i, w i * max (V i - U i) 0) -
+        (∑ i, w i * (V i - U i)^2))) := by ring
+    rw [hEq]
+    exact neg_nonpos.mpr (mul_nonneg ha hnn)
+  have key : (∑ i, w i * (V i - U i)^2) * (L + 2 * a) ≤
+      4 * a * (∑ i, w i * |U i - m|) * (L + a) := by
+    nlinarith [m1, m2]
+  rw [le_div_iff₀ hL2]
+  exact key
+
 end AverageSensitivity
