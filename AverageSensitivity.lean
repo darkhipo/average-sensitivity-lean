@@ -6,3 +6,4 @@ import AverageSensitivity.WallisAssembly
 #print axioms OAI.LeanBlast.GotsmanLinial.gotsmanLinialStatement
 #print axioms AverageSensitivity.polynomial_bound_3762
 #print axioms AverageSensitivity.polynomial_bound_3762_general
+#print axioms AverageSensitivity.AS_bound_683_214
